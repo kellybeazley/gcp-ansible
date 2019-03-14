@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: create a instance
+    gcp_compute_instance:
+      name: "kelly-ansible"
+      machine_type: g1-small
+      disks:
+      - auto_delete: true
+        boot: true
+        initialize_params:
+          source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1404-trusty-v20190312
+      network_interfaces:
+        - network:
+          access_configs:
+          - name: default
+            type: ONE_TO_ONE_NAT
+      zone: europe-west2-a
+      project: "kelly-gcp"
+      auth_kind: serviceaccount
+      service_account_file: "/Users/kelly.beazley/terraform/kelly-gcp-sa.json"
+      state: present
